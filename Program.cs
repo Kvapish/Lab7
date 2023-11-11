@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
-/// <summary>
-/// Вариант 8
-/// Игра "Угадай число" (List): Создайте игру, в которой программа случайным образом выбирает число, а пользователь должен угадать его. Используйте список для сохранения попыток пользователя.
-/// Соблюдая Microsoft C# code conventions и средства языка C# для задания из предыдущей работы реализовать сохранение и восстановление данных данных массивов объектов:
-/// используя сохранение/восстановление в бинарном файле;
-/// используя сериализацию/десериализацию в JSON или XML (на выбор); дополнительно оценивается реализация вышеуказанных операций при помощи отдельного класса.
-/// Код использует библиотеку Newtonsoft.Json для сериализации и десериализации данных в формат JSON. Данные о попытках пользователя сохраняются как JSON в файл userGuesses.json и восстанавливаются из него при запуске программы.
-/// </summary>
 class Program
 {
     static void Main()
     {
-        // Задайте имя файла для сохранения и загрузки данных в формате JSON
         string jsonFileName = "userGuesses.json";
         DataHandler dataHandler = new DataHandler(jsonFileName);
 
-        // Задайте имя файла для сохранения и загрузки данных в бинарном формате
         string binaryFileName = "userGuesses.bin";
         BinaryDataHandler binaryDataHandler = new BinaryDataHandler(binaryFileName);
 
@@ -44,6 +34,23 @@ class Program
                     Console.WriteLine($"Поздравляем! Вы угадали число {secretNumber} с {attempts} попыток.");
                     dataHandler.SaveUserGuesses(userGuesses);
                     binaryDataHandler.SaveUserGuesses(userGuesses);
+                    // Фильтрация данных
+                    List<int> evenGuesses = dataHandler.FilterUserGuesses(userGuesses, guess => guess % 2 == 0);
+                    Console.Write("Отфильтрованные данные (четные числа): ");
+                    foreach (var guess in evenGuesses)
+                    {
+                        Console.Write(guess + " ");
+                    }
+                    Console.WriteLine(); // Перейти на следующую строку
+
+                    // Сортировка данных
+                    dataHandler.SortUserGuesses(userGuesses, (guess1, guess2) => guess1.CompareTo(guess2));
+                    Console.Write("Отсортированные данные: ");
+                    foreach (var guess in userGuesses)
+                    {
+                        Console.Write(guess + " ");
+                    }
+                    Console.WriteLine(); // Перейти на следующую строку
                     Console.WriteLine("Для завершения программы, нажмите любую клавишу...");
                     Console.ReadKey();
                     break;
@@ -62,8 +69,20 @@ class Program
                 Console.WriteLine("Пожалуйста, введите корректное число.");
             }
         }
+
+       
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

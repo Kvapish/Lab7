@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System;
 using System.IO;
-/// <summary>
-/// Класс DataHandler создан для управления операциями сохранения и восстановления данных в формате JSON.
-/// </summary>
+
 public class DataHandler
 {
     private string fileName;
@@ -28,5 +27,15 @@ public class DataHandler
     {
         string json = JsonConvert.SerializeObject(userGuesses);
         File.WriteAllText(fileName, json);
+    }
+
+    public List<int> FilterUserGuesses(List<int> guesses, Predicate<int> filter)
+    {
+        return guesses.FindAll(filter);
+    }
+
+    public void SortUserGuesses(List<int> guesses, Comparison<int> sort)
+    {
+        guesses.Sort(sort);
     }
 }

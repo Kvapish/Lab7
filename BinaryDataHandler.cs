@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-/// <summary>
-/// Класс BinaryDataHandler создан для управления операциями сохранения и восстановления данных в бинарном формате.
-/// </summary>
+
 public class BinaryDataHandler
 {
     private string fileName;
