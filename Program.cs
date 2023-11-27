@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
+public delegate bool FilterDelegate(int guess);
+public delegate int ComparisonDelegate(int guess1, int guess2);
 class Program
 {
     static void Main()
@@ -34,6 +36,7 @@ class Program
                     Console.WriteLine($"Поздравляем! Вы угадали число {secretNumber} с {attempts} попыток.");
                     dataHandler.SaveUserGuesses(userGuesses);
                     binaryDataHandler.SaveUserGuesses(userGuesses);
+
                     // Фильтрация данных
                     List<int> evenGuesses = dataHandler.FilterUserGuesses(userGuesses, guess => guess % 2 == 0);
                     Console.Write("Отфильтрованные данные (четные числа): ");
@@ -69,8 +72,6 @@ class Program
                 Console.WriteLine("Пожалуйста, введите корректное число.");
             }
         }
-
-       
     }
 }
 

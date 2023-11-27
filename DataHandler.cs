@@ -29,13 +29,32 @@ public class DataHandler
         File.WriteAllText(fileName, json);
     }
 
-    public List<int> FilterUserGuesses(List<int> guesses, Predicate<int> filter)
+    public List<int> FilterUserGuesses(List<int> guesses, FilterDelegate filter)
     {
-        return guesses.FindAll(filter);
+        List<int> filteredGuesses = new List<int>();
+        foreach (var guess in guesses)
+        {
+            if (filter(guess))
+            {
+                filteredGuesses.Add(guess);
+            }
+        }
+        return filteredGuesses;
     }
 
-    public void SortUserGuesses(List<int> guesses, Comparison<int> sort)
+    public void SortUserGuesses(List<int> guesses, ComparisonDelegate sort)
     {
-        guesses.Sort(sort);
+        for (int i = 0; i < guesses.Count - 1; i++)
+        {
+            for (int j = i + 1; j < guesses.Count; j++)
+            {
+                if (sort(guesses[i], guesses[j]) > 0)
+                {
+                    int temp = guesses[i];
+                    guesses[i] = guesses[j];
+                    guesses[j] = temp;
+                }
+            }
+        }
     }
 }
